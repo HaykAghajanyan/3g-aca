@@ -1,91 +1,104 @@
-import {Component} from "react";
-import {COLORS, BUTTON_TYPES} from './helpers/constants'
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer";
-import NavBar from "./components/NavBar";
+import React, { useState, useRef, useEffect } from 'react';
+import Logo from "./components/Logo";
+import Quote from './components/Quote'
+import AddItem from './components/AddItem'
+import ToDoItem from './components/ToDoItem'
 
-const {RED, PURPLE, BLUE, BROWN, GREEN, ORANGE} = COLORS
-const {HIDE, SHOW} = BUTTON_TYPES
+import './App.css';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            circles: [
-                {
-                    id: '1',
-                    color: RED
-                },
-                {
-                    id: '2',
-                    color: PURPLE
-                },
-                {
-                    id: '3',
-                    color: BROWN
-                },
-                {
-                    id: '4',
-                    color: BLUE
-                },
-                {
-                    id: '5',
-                    color: GREEN
-                },
-            ],
-            chosenCircle: null,
-            isHeaderShown: true,
-            randomNumFromHeader: null
+function App() {
+
+  const [state, setState] = useState([])
+
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+    .then(response => response.json())
+    .then(json => {
+      localStorage.setItem("state", JSON.stringify(json.slice(0, 10)))
+    })
+     setState(JSON.parse(localStorage.getItem("state")) )
+    
+  }, [])
+
+
+  const deleteTodoItem = (id) => {
+    const newState = state.filter(item => item.id !== id)
+    localStorage.setItem("state", JSON.stringify(newState))
+    setState(newState)
+  }
+
+  const setToDoneTodoItem = (id) => {
+    const newState = state.map(item => {
+      if(item.id === id) {
+        if(item.completed === false){
+          item.completed = true
+        } else {
+          item.completed = false
         }
-    }
+      }
+      return item
+    })
+    localStorage.setItem("state", JSON.stringify(newState))
+    setState(newState)
+  }
+  
+  const enterKeyPress = ( item) => {
+      addToDoItem(item)
+  }
 
-    changeColor = e => {
-        this.setState({chosenCircle: e.target.id})
-    }
+  const addToDoItem = (item) => {
+    const newState = [...state]
+    newState.unshift(item)
+    localStorage.setItem("state", JSON.stringify(newState))
+    setState(newState)
+  }
 
-    toggleHeader = () => {
-        this.setState(prev => {
-            prev.isHeaderShown = !prev.isHeaderShown
-            return prev
-        })
-    }
+  const sortItems = () => {
+    const newState = [...state]
+    newState.sort((a,b) => (+a.completed > +b.completed) ? 1 : ((+b.completed > +a.completed) ? -1 : 0))
+    localStorage.setItem("state", JSON.stringify(newState))
+    setState(newState)
+  }
 
-    getRandomNum = (num) => {
-        this.setState({randomNumFromHeader: num})
-    }
+  return (
+    <>
+      <Logo />
 
+      <div className="container">
+        <Quote />
+        <div className="row">
+            <div className="col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
 
-    render() {
-        const {circles, chosenCircle, isHeaderShown, randomNumFromHeader} = this.state
-
-        console.log('randomNumFromHeader', randomNumFromHeader)
-        return (
-            <>
-                {isHeaderShown && <Header
-                    getRandomNum={this.getRandomNum}
-                    color={chosenCircle && circles[chosenCircle - 1].color}
-                />}
-
-
-                <button onClick={this.toggleHeader}>{isHeaderShown ? HIDE : SHOW}</button>
-                <div className="container">
-                    {
-                        circles.map(circle => {
-                            return <div
-                                key={circle.id}
-                                id={circle.id}
-                                className='circle'
-                                style={{backgroundColor: chosenCircle === circle.id ? ORANGE : circle.color}}
-                                onClick={this.changeColor}
-                            >{circle.id}</div>
-                        })
-                    }
-                </div>
-                <Footer />
-                <NavBar />
-            </>
-        );
-    }
+              <AddItem 
+                addItem={addToDoItem}
+                enterPress={enterKeyPress}
+              />
+              <button 
+              onClick={sortItems}
+                type="button" 
+                className="btn btn-block btn-outline-warning button"
+              >
+                Sort
+              </button>
+              {state ? (
+                <ul className="todo-list">
+                {state.map(item => {
+                  return <ToDoItem key={item.id}
+                          item={item}
+                          deleteItem={deleteTodoItem} 
+                          setToDoneItem={setToDoneTodoItem}
+                        />
+                  })}
+                </ul>
+              ) : (
+                <p className="no-items text-muted text-center"><i className="fa fa-ban"></i> No items</p>
+              ) }
+            </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default App;
