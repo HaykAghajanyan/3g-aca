@@ -1,87 +1,49 @@
-import {Component} from "react";
-import {COLORS, BUTTON_TYPES} from './helpers/constants'
-import Header from "./components/Header/Header";
+import { useEffect, useState } from "react";
 
-const {RED, PURPLE, BLUE, BROWN, GREEN, ORANGE} = COLORS
-const {HIDE, SHOW} = BUTTON_TYPES
+// Գործնականի համար կպատրաստեք ToDo list -ի ռեալիզացիա։ Այդ պռոյեկտում 
+// https://jsonplaceholder.typicode.com/todos հղումից կներբեռնեք todo-ները։ 
+//  Ամեն todo-ն պետք է ունենա title-ը, id-ն ու status՝ completed ու in progress
+//  և checkbox, որ փոխի այդ ստատուսը։ 
+//  Եթե ստատուսը completed ա պետք է այդ todo-ի գույնը կանաչի։ Նաև պետք է լինի sort
+//  կնոպկա, որը կսորթավորի todo-ները \
+//  ըստ ստատուսի՝ սկզբից ցույց կտա չկատարվածները։ Սթայլերի վրա աշխատելը ցանկալի ա
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            circles: [
-                {
-                    id: '1',
-                    color: RED
-                },
-                {
-                    id: '2',
-                    color: PURPLE
-                },
-                {
-                    id: '3',
-                    color: BROWN
-                },
-                {
-                    id: '4',
-                    color: BLUE
-                },
-                {
-                    id: '5',
-                    color: GREEN
-                },
-            ],
-            chosenCircle: null,
-            isHeaderShown: true,
-            randomNumFromHeader: null
-        }
-    }
+function App() {
+    const [data, setData] = useState([])
 
-    changeColor = e => {
-        this.setState({chosenCircle: e.target.id})
-    }
+    useEffect(() => {
+        fetch(`https://jsonplaceholder.typicode.com/todos`)
+            .then(res => res.json())
+            .then(json => setData(json))
 
-    toggleHeader = () => {
-        this.setState(prev => {
-            prev.isHeaderShown = !prev.isHeaderShown
-            return prev
-        })
-    }
+    }, [])
+   
+    const [check, setCheck] = useState(Boolean)
 
-    getRandomNum = (num) => {
-        this.setState({randomNumFromHeader: num})
-    }
+    return (
+        <div className="main">
+            <h1 className="title"> Todo List</h1>
 
+            <pre>
 
-    render() {
-        const {circles, chosenCircle, isHeaderShown, randomNumFromHeader} = this.state
+                {data.slice(0, 10).sort((a,b)=>{
+                   return a.completed>b.completed ? -1 : 1
+                }).map(item => {
+                    return <div key={item.id} className="task"  style={{backgroundColor: item.completed ? 
+                    "rgba(236, 235, 233, 0.5)" : "rgba(247, 235, 211, 0.5)"}}>
+                        <label style={{color: item.completed ? "rgb(33, 141, 33)" : "red"}}>
+                        <input type="checkbox" onClick={() => {
+                            setCheck(prev => !prev)
+                            item.completed =  !item.completed    
+                        }} />{item.title} : {String(item.completed)}
 
-        console.log('randomNumFromHeader', randomNumFromHeader)
-        return (
-            <>
-                {isHeaderShown && <Header
-                    getRandomNum={this.getRandomNum}
-                    color={chosenCircle && circles[chosenCircle - 1].color}
-                />}
+                    </label></div>
+                })
+                }
 
-
-                <button onClick={this.toggleHeader}>{isHeaderShown ? HIDE : SHOW}</button>
-                <div className="container">
-                    {
-                        circles.map(circle => {
-                            return <div
-                                key={circle.id}
-                                id={circle.id}
-                                className='circle'
-                                style={{backgroundColor: chosenCircle === circle.id ? ORANGE : circle.color}}
-                                onClick={this.changeColor}
-                            >{circle.id}</div>
-                        })
-                    }
-                </div>
-            </>
-        );
-    }
+            </pre>
+        </div>
+    )
 }
 
 export default App;
