@@ -12,26 +12,15 @@ code {
     monospace;
 }
 
-.container {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 100px;
+.todoList{
+  list-style: none;
 }
-
-.circle {
-  display: flex;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid black;
+.completed{
+  background-color: green;
 }
-
-.header {
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid black;
-  height: 10vh;
+.todo{
+  background-color: rgba(102, 51, 153, 0.53);
+  padding: 20px;
+  width: fit-content;
+  height: fit-content;
 }
