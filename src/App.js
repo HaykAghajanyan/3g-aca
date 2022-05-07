@@ -1,7 +1,6 @@
 import {Component} from "react";
 import {COLORS, BUTTON_TYPES} from './helpers/constants'
 import Header from "./components/Header/Header";
-import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 
 const {RED, PURPLE, BLUE, BROWN, GREEN, ORANGE} = COLORS
