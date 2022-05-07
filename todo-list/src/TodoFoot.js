@@ -1,12 +1,11 @@
-
+import {memo} from 'react'
 
 const TodoFoot = ({onSort}) => {
     return (
-      <div className="Foot">
-        <button className="button" onClick={onSort} >Sort</button>
-      </div>
+        <div className="Foot">
+            <button className="button" onClick={onSort}>Sort</button>
+        </div>
     )
-  }
-  
-  export default TodoFoot
-  
+}
+
+export default memo(TodoFoot)
