@@ -1,7 +1,7 @@
 import {Component} from "react";
 import {COLORS, BUTTON_TYPES} from './helpers/constants'
 import Header from "./components/Header/Header";
-import NavBar from "./components/NavBar";
+import ToDoList from "./components/ToDoList";
 
 const {RED, PURPLE, BLUE, BROWN, GREEN, ORANGE} = COLORS
 const {HIDE, SHOW} = BUTTON_TYPES
@@ -80,8 +80,8 @@ class App extends Component {
                         })
                     }
                 </div>
-                <Footer />
-                <NavBar />
+
+                <ToDoList/>
             </>
         );
     }
