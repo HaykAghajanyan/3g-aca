@@ -2,7 +2,7 @@ import {useTodoContext} from "../../contexts/TodoProvider"
 import "./headerStyle.css"
 
 const TodoHeader = () => {
-  const {todoList, setTodoList} = useTodoContext()
+  const {todoList, setTodoList, temp, setTemp} = useTodoContext()
 
   const inputValue = (e) => {
     if (e.key === "Enter") {
@@ -35,6 +35,7 @@ const TodoHeader = () => {
             }
           })
         )
+        setTemp(false)
         break action
       }
     }

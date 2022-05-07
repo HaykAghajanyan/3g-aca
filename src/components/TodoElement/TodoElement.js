@@ -22,7 +22,6 @@ const TodoElement = ({todo}) => {
           return item
         })
       )
-      
       setTemp(true)
     }
 

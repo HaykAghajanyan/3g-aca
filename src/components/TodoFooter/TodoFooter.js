@@ -10,6 +10,7 @@ const TodoFooter = () => {
     action: for (let i = 0; i < todoList.length; i++) {
       if (todoList[i].completed) {
         setTodoList(todoList.filter((item) => !item.completed))
+        setTemp(false)
         break action
       }
     }
