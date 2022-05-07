@@ -18,7 +18,7 @@ function ToDo(){
     },[])
 
     const changeCheckBox = (e) => {
-        toDo[e-1]['completed'] = !toDo[e-1]['completed'];
+        toDo[e]['completed'] = !toDo[e]['completed'];
         return setToDo([...toDo]);
     }
 
@@ -32,20 +32,24 @@ function ToDo(){
     return (
         <div>
             <h1>TO DO LIST</h1>
-            <hr/>
+            <hr/>            
             {
                 toDo.map((item) =>
                     (   
                         <div className={"row"} key={item['id']} style={
-                        item['completed'] ? { color: 'white' } : { color: '#ffaf1a' } }  onChange={()=>changeCheckBox(item['id'])}>
+                        item['completed'] ? { color: 'white' } : { color: '#ffaf1a' } }  onChange={()=>{
+                            changeCheckBox(toDo.indexOf(item))
+                        }}>
                             <input type="checkbox" defaultChecked={item['completed']}/>
                             {item['title']}
-                            {!item['completed'] ? <img src={imageName} 
-                                style={{width: "20px", height: "auto",
-                                'margin-left': "10px", 'top': '40px'}} /> : 
-                                <img src={imageChecked}
-                                style={{width: "20px", height: "auto",
-                                'margin-left': "10px", 'top': '40px'}} />}
+                            {!item['completed'] 
+                                ? <img src={imageName} 
+                                    style={{width: "20px", height: "auto",
+                                    marginLeft: "10px", top: '40px'}} /> 
+                                :
+                                    <img src={imageChecked}
+                                    style={{width: "20px", height: "auto",
+                                    marginLeft: "10px", top: '40px'}} />}
                         </div>
                     )
                 )
