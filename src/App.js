@@ -6,15 +6,14 @@ import TodoTitles from './TodoTitle';
 function App() {
    
 
-  const [data, setData] = useState([])
+
   const [todos, setTodos] = useState([])
   let arr=[]
   useEffect(()=>{
     fetch(`https://jsonplaceholder.typicode.com/todos`)
       .then(response => response.json())
       .then(results =>{
-        //console.log(results)
-        setData(results.data)
+        
         arr = results.slice(0,10)
         setTodos(arr)
         console.log(arr);
@@ -22,30 +21,33 @@ function App() {
   }, [])
 
 const handleSort = (todos) =>{
- return todos.sort((a,b)=> a.completed > b.completed ? 1 : -1)
+  const sorted=todos.sort((a,b)=> a.completed - b.completed)
+  setTodos([...sorted])
+
 } // sa chi ashxatum
 
   return (
     <div className="App">
     <TodoTitles todos={todos} onDelete={(todo)=>{
          setTodos(todos.filter((t)=> t.id !== todo.id))
-       }} />
-    {/* <TodoRows  changeColor = {() => {
-        {todos.map((item)=>{
-            if (item.completed === true) {
-                 setTodos({backgroundColor:"green"}) 
+       }}
+       onChange={(newTodo)=>{
+        setTodos(todos.map((todo)=>{
+          if(todo.id === newTodo.id){
+            return newTodo;
+          }
+          return todo;
+        }));
+      }}
+       />
     
-            }
-            
-        })}
-    }}/>  */}  
     <TodoFooter
       todos={todos}
       onClearCompleted={()=>{
           setTodos(todos.filter((item)=>!item.completed))
         }} />
     
-    <button onClick={handleSort}>Sort</button>
+    <button onClick={()=> handleSort(todos)}>Sort</button>
     </div>
   );
 }
