@@ -41,9 +41,27 @@ const TodoHeader = () => {
     }
   }
 
+  const uncheckAll = () => {
+    action: for (let i = 0; i < todoList.length; i++) {
+      if (todoList[i].completed) {
+        setTodoList(
+          todoList.map((item) => {
+            return {
+              ...item,
+              completed: false,
+            }
+          })
+        )
+        setTemp(false)
+        break action
+      }
+    }
+  }
+
   return (
     <div className="todoHeader">
       <button onClick={completeAll}>Complete All</button>
+      <button onClick={uncheckAll}>Uncheck All</button>
       <input
         type="text"
         onKeyPress={inputValue}
