@@ -28,7 +28,7 @@ const TodoFooter = () => {
     })
 
     setTodoList((prev) => {
-      prev = [...completedTodos, ...unCompletedTodos]
+      prev = [ ...unCompletedTodos,...completedTodos]
       return prev
     })
 
