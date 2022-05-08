@@ -13,7 +13,7 @@ function ToDoItem({todo, onChange, onDeleted}) {
               <div>
                  <label>
                     <input type="checkbox" checked={todo.isCompleted} onChange={onChecked}/>
-                     {todo.text}
+                     {todo.title}
                     <button onClick={() => {
                        onDeleted(todo)
                     }}>X</button>

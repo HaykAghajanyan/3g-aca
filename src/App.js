@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import './App.css';
 import ToDoList from './contexts/ToDo/ToDoList';
 import ToDoItem from './contexts/ToDo/ToDoItem';
@@ -6,32 +6,22 @@ import ToDoAdd from './contexts/ToDo/ToDoAdd';
 import ToDoFooter from './contexts/ToDo/ToDoFooter';
 
 function App() {
-   const [todos, settodos] = useState([
-     {
-       id: Math.random(),
-       text:"Learn JS",
-       isCompleted: false
-     },
-     {
-      id: Math.random(),
-      text:"Learn CSS",
-      isCompleted: false
-    },
-    {
-      id: Math.random(),
-      text:"Learn React",
-      isCompleted: false
-    }
-   ])
+   const [todos, settodos] = useState([])
+
+   useEffect(() => {
+       fetch("https://jsonplaceholder.typicode.com/todos")
+       .then(res => res.json())
+       .then(res => settodos(res.splice(0, 10)))
+   }, [])
 
   return (
     <div className="App">
-        <ToDoAdd onAdd={(text) => {
+        <ToDoAdd onAdd={(title) => {
             settodos([
                 ...todos,
                 {
                     id: Math.random(),
-                    text: text,
+                    title: title,
                     isCompleted: false
                 }
             ])
