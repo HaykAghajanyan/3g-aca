@@ -4,11 +4,10 @@ function Todo({todo,onChange}){
   return (
       <div>
            {
-               todo.length > 0 && todo.map((todo) =>{
+               todo.map((todo) =>{
                    console.log(todo)
                   return (
-                      <TodoItem key={todo.id}todo={todo} onChange={onChange}/>
-                     
+                      <TodoItem key={todo.id} todo={todo} onChange={onChange}/>
                   )
                })
            }
