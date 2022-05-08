@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import Add from "./inputAddСomp/inputAdd";
 
 function App() {
     const [data, setData] = useState([])
@@ -12,7 +13,8 @@ function App() {
 
     return (
         <div className="main">
-            <h1 className="title"> Todo List</h1>
+            <h1 className="title"> Todo List </h1>
+            <Add data={data} setData={setData}/>
             <pre>
                 {data
                     .sort((a, b) => a.completed > b.completed ? 1 : -1)
