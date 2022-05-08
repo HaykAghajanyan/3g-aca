@@ -1,86 +1,62 @@
-import React, { useState } from "react";
-import {COLORS, BUTTON_TYPES} from './helpers/constants'
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer";
-import NavBar from "./components/NavBar";
-
-const {RED, PURPLE, BLUE, BROWN, GREEN, ORANGE} = COLORS
-const {HIDE, SHOW} = BUTTON_TYPES
+import { useState } from 'react';
+// import './App.css';
+import ToDoList from './contexts/ToDo/ToDoList';
+import ToDoItem from './contexts/ToDo/ToDoItem';
+import ToDoAdd from './contexts/ToDo/ToDoAdd';
+import ToDoFooter from './contexts/ToDo/ToDoFooter';
 
 function App() {
-    const [state, setState] = useState({
-        circles: [
-            {
-                id: '1',
-                color: RED
-            },
-            {
-                id: '2',
-                color: PURPLE
-            },
-            {
-                id: '3',
-                color: BROWN
-            },
-            {
-                id: '4',
-                color: BLUE
-            },
-            {
-                id: '5',
-                color: GREEN
-            },
-        ],
-        chosenCircle: null,
-        isHeaderShown: true,
-        randomNumFromHeader: null
-    })
-
-    const changeColor = e => {
-        setState({chosenCircle: e.target.id})
+   const [todos, settodos] = useState([
+     {
+       id: Math.random(),
+       text:"Learn JS",
+       isCompleted: false
+     },
+     {
+      id: Math.random(),
+      text:"Learn CSS",
+      isCompleted: false
+    },
+    {
+      id: Math.random(),
+      text:"Learn React",
+      isCompleted: false
     }
+   ])
 
-    const toggleHeader = () => {
-        setState(prev => ({
-            ...prev,
-            isHeaderShown: !prev.isHeaderShown
-        }))
-    }
-
-    const getRandomNum = (num) => {
-        setState(prev => ({...prev, randomNumFromHeader: num}))
-    }
-
-
-    const {circles, chosenCircle, isHeaderShown, randomNumFromHeader} = state
-
-    console.log('randomNumFromHeader', randomNumFromHeader)
-    return (
-        <>
-            {isHeaderShown && <Header
-                getRandomNum={getRandomNum}
-                color={chosenCircle && circles[chosenCircle - 1].color}
-            />}
-
-
-            <button onClick={toggleHeader}>{isHeaderShown ? HIDE : SHOW}</button>
-            <div className="container">
+  return (
+    <div className="App">
+        <ToDoAdd onAdd={(text) => {
+            settodos([
+                ...todos,
                 {
-                    circles.map(circle => {
-                        return <div
-                            key={circle.id}
-                            id={circle.id}
-                            className='circle'
-                            style={{backgroundColor: chosenCircle === circle.id ? ORANGE : circle.color}}
-                            onClick={changeColor}
-                        >{circle.id}</div>
-                    })
+                    id: Math.random(),
+                    text: text,
+                    isCompleted: false
                 }
-            </div>
-            <Footer />
-            <NavBar />
-        </>
-    );
+            ])
+        }}/>
+        <ToDoList 
+          todos={todos} 
+          onDeleted={(todo) => {
+              settodos(todos.filter((t) => t.id !== todo.id
+              ))
+          }}
+          onChange={(newTodo) => {
+             settodos(todos.map((todo) => {
+                if(todo.id === newTodo.id){
+                    return newTodo
+                } else {
+                    return todo
+                }
+             }))
+          }}
+          />
+        <ToDoFooter todos={todos} clearCompleted={() => {
+            settodos(todos.filter((todo) => !todo.isCompleted))
+        }}/>
+    </div>
+  );
 }
 
 export default App;
