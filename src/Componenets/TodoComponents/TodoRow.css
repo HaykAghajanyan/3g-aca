@@ -1,0 +1,13 @@
+.todo-row{
+    padding: 1rem;
+    margin: 1rem;
+    border: 1px solid black;
+}
+
+.todo-row.completed{
+    background-color: #137613;
+}
+
+.todo-row.in-progress{
+    background-color: #e6474e;
+}
