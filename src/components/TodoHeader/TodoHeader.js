@@ -2,75 +2,72 @@ import {useTodoContext} from "../../contexts/TodoProvider"
 import "./headerStyle.css"
 
 const TodoHeader = () => {
-  const {todoList, setTodoList, temp, setTemp} = useTodoContext()
+    const {todoList, setTodoList, temp, setTemp} = useTodoContext()
 
-  const inputValue = (e) => {
-    if (e.key === "Enter") {
-      if (e.target.value !== "") {
-        const text = e.target.value
-        setTodoList((prev) => {
-          prev = [
-            ...todoList,
-            {
-              id: Math.random(),
-              title: text,
-              completed: false,
-            },
-          ]
-          return prev
-        })
-        e.target.value = ""
-      }
-    }
-  }
-
-  const completeAll = () => {
-    action: for (let i = 0; i < todoList.length; i++) {
-      if (!todoList[i].completed) {
-        setTodoList(
-          todoList.map((item) => {
-            return {
-              ...item,
-              completed: true,
+    const inputValue = (e) => {
+        if (e.key === "Enter") {
+            if (e.target.value.trim() !== "") {
+                const text = e.target.value
+                setTodoList((prev) => {
+                    prev = [
+                        ...todoList,
+                        {
+                            id: Math.random(),
+                            title: text,
+                            completed: false,
+                        },
+                    ]
+                    return prev
+                })
+                e.target.value = ""
             }
-          })
-        )
-        setTemp(false)
-        break action
-      }
+        }
     }
-  }
 
-  const uncheckAll = () => {
-    action: for (let i = 0; i < todoList.length; i++) {
-      if (todoList[i].completed) {
-        setTodoList(
-          todoList.map((item) => {
-            return {
-              ...item,
-              completed: false,
+    const completeAll = () => {
+        action: for (let i = 0; i < todoList.length; i++) {
+            if (!todoList[i].completed) {
+                const arr = todoList.map((item) => ({
+                    ...item,
+                    completed: true,
+                }))
+                setTodoList(arr)
+                setTemp(false)
+                break action
             }
-          })
-        )
-        setTemp(false)
-        break action
-      }
+        }
     }
-  }
 
-  return (
-    <div className="todoHeader">
-      <button onClick={completeAll}>Complete All</button>
-      <button onClick={uncheckAll}>Uncheck All</button>
-      <input
-        type="text"
-        onKeyPress={inputValue}
-        placeholder="What needs To Be Done?"
-        id="input"
-        autoFocus
-      ></input>
-    </div>
-  )
+    const uncheckAll = () => {
+        action: for (let i = 0; i < todoList.length; i++) {
+            if (todoList[i].completed) {
+                setTodoList(
+                    todoList.map((item) => {
+                        return {
+                            ...item,
+                            completed: false,
+                        }
+                    })
+                )
+                setTemp(false)
+                break action
+            }
+        }
+    }
+
+    return (
+        <div className="todoHeader">
+            <button onClick={completeAll}>Complete All</button>
+            <button onClick={uncheckAll}>Uncheck All</button>
+            <input
+                type="text"
+                onKeyPress={inputValue}
+                placeholder="What needs To Be Done?"
+                id="input"
+                autoFocus
+            />
+        </div>
+    )
 }
 
 export default TodoHeader
