@@ -11,16 +11,16 @@ const ToDoItem = ({item, deleteItem, setToDoneItem}) => {
 
   return (
     <li
-      className={`animated flipInX ${item.completed === true ? "danger" : ""}`}>
+      className={`animated flipInX ${item.completed ? "danger" : ""}`}>
       <div className="checkbox">
-        <span 
+        <span
           onClick={deleteTodoItem}
           className="close">
           <i className="fa fa-times"></i>
         </span>
         <label>
           <span className="checkbox-mask"></span>
-          <input 
+          <input
             type="checkbox"
             onClick={setToDoneTodoItem}
               />
