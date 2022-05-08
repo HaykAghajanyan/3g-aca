@@ -1,91 +1,31 @@
-import {Component} from "react";
-import {COLORS, BUTTON_TYPES} from './helpers/constants'
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer";
-import NavBar from "./components/NavBar";
+import { useCallback, useEffect, useState } from "react"
+import Footer from "./Todo/Footer"
+import List from "./Todo/list"
 
-const {RED, PURPLE, BLUE, BROWN, GREEN, ORANGE} = COLORS
-const {HIDE, SHOW} = BUTTON_TYPES
-
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            circles: [
-                {
-                    id: '1',
-                    color: RED
-                },
-                {
-                    id: '2',
-                    color: PURPLE
-                },
-                {
-                    id: '3',
-                    color: BROWN
-                },
-                {
-                    id: '4',
-                    color: BLUE
-                },
-                {
-                    id: '5',
-                    color: GREEN
-                },
-            ],
-            chosenCircle: null,
-            isHeaderShown: true,
-            randomNumFromHeader: null
-        }
+    const App =()=> {
+        const [todo,setTodo] = useState([])
+        useEffect(()=>{
+            fetch('https://jsonplaceholder.typicode.com/todos')
+            .then(res=> res.json())
+            .then(arr=>{
+                arr = arr.slice(0,10)
+                setTodo(arr)
+            })
+        },[])
+const onChange = (todoNew)=>{
+    setTodo(todo.map(todo=>{
+    if(todo.id===todoNew.id){
+        return todoNew
     }
-
-    changeColor = e => {
-        this.setState({chosenCircle: e.target.id})
-    }
-
-    toggleHeader = () => {
-        this.setState(prev => {
-            prev.isHeaderShown = !prev.isHeaderShown
-            return prev
-        })
-    }
-
-    getRandomNum = (num) => {
-        this.setState({randomNumFromHeader: num})
-    }
-
-
-    render() {
-        const {circles, chosenCircle, isHeaderShown, randomNumFromHeader} = this.state
-
-        console.log('randomNumFromHeader', randomNumFromHeader)
+return todo
+}))}
         return (
-            <>
-                {isHeaderShown && <Header
-                    getRandomNum={this.getRandomNum}
-                    color={chosenCircle && circles[chosenCircle - 1].color}
-                />}
-
-
-                <button onClick={this.toggleHeader}>{isHeaderShown ? HIDE : SHOW}</button>
-                <div className="container">
-                    {
-                        circles.map(circle => {
-                            return <div
-                                key={circle.id}
-                                id={circle.id}
-                                className='circle'
-                                style={{backgroundColor: chosenCircle === circle.id ? ORANGE : circle.color}}
-                                onClick={this.changeColor}
-                            >{circle.id}</div>
-                        })
-                    }
-                </div>
-                <Footer />
-                <NavBar />
-            </>
-        );
-    }
+    <div>
+        <List todo={todo} 
+              onChange={onChange} />
+        <Footer todo={todo}
+                setTodo={setTodo}/>
+    </div>
+)
 }
-
-export default App;
+export default App 

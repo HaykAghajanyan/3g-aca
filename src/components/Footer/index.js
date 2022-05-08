@@ -1,13 +1,13 @@
-import {useThemeContext} from "../../contexts/colorThemeProvider";
+// import {useThemeContext} from "../../contexts/colorThemeProvider";
 
-const Footer = () => {
-    const {themeColor} = useThemeContext()
+// const Footer = () => {
+//     const {themeColor} = useThemeContext()
 
-    return (
-        <div style={{height: '10vh', width: '100%', backgroundColor: themeColor}}>
+//     return (
+//         <div style={{height: '10vh', width: '100%', backgroundColor: themeColor}}>
 
-        </div>
-    )
-}
+//         </div>
+//     )
+// }
 
-export default Footer
+// export default Footer
