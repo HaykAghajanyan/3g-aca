@@ -6,16 +6,99 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
 }
+.cont{
+  width: fit-content
+}
+
 .task{
     height: 20px;
     padding: 10px;
-    border: .5px solid black;
+    border-radius: 15px;
     font-size: 17px;
-    font-family:cursive;
+    font-family: "Open Sans", sans;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.label{
+  cursor: pointer;
+}
+
+.checkbox{
+    cursor: pointer;
 }
 .title{
-    font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: "Open Sans", sans; 
     color: rgb(2, 82, 71);
+}
+
+.inputMain{
+    display: inline-block;
+    width: 215px;
+    padding: 10px ;
+    font-family: "Open Sans", sans;
+    font-weight: 400;
+    font-size: 18px;
+    color: #153f34;
+    background: #efefef;
+    border: 0;
+    border-radius: 15px;
+    outline: 0;
+    text-indent: 70px;
+    transition: all .3s ease-in-out;
+}
+
+.inputMain:focus,
+.inputMain:active {
+  text-indent: 0;
+  background: #fff;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.addTodo{
+  border: none;
+  border-radius: 15px;
+  font-size: 18px;
+  padding: 10px ;
+  font-family: "Open Sans", sans;
+  width: 100px;
+  -webkit-transition: .3s  ease-in-out;
+  transition: .3s  ease-in-out;
+  cursor: pointer;
+  background-color: #0ffa98;
+}
+.addTodo:hover{
+    background-color: #116291;
+    color: white;
+  }
+
+.btn{
+  width: 130px;
+  height: auto;
+  margin-top: 10px;
+  margin-inline-start: 10px;
+  background-color: rgb(173, 180, 180);
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  padding: 10px ;
+  font-family: "Open Sans", sans;
+  cursor: pointer;
+}
+.btn:hover{
+    background-color: #116291;
+    color: white;
+}
+
+.x{
+    font-family: "Open Sans", sans;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: rgb(173, 180, 180);
+}
+.x:hover{
+    background-color: #914b11;
+    color: white;
 }
