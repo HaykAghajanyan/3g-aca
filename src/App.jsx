@@ -28,9 +28,7 @@ const App = () => {
     const but = () => {
 
         fetch("https://jsonplaceholder.typicode.com/todos")
-            .then((res) => {
-                return res.json()
-            })
+            .then((res) => res.json())
             .then((data) => {
                 setList(data)
 
@@ -40,32 +38,37 @@ const App = () => {
             })
     }
 
-    return (<>
-        <button onClick = { but } > Click </button>   
-        <div>
-               {list.map(e => {
-                return (
-                    <>
-                    <hr style={{
-                        width:'50%',
-                    }}></hr>
-                    <div key = { e.id } className={e.completed? 'colored': ''} 
-                    style={{height: '200px',
-                            width: '200px',
-                    }}
-                    >
-                    <p> ID: { e.id } </p>   
-                    <span> title: { e.title } </span> <span><input name={e.id} type='checkbox' checked={e.completed} onChange={handleChange}/> </span> 
-                    <p> user ID: { e.userId } </p>     
-                    <p> Status: { e.completed ? 'true' : 'false' } </p>  
-                    </div>
-                    </>
-                )
-            })
-        }
-        </div>
+    return (
+        <>
+            <button onClick={but}> Click</button>
+            <div>
+                {list.map(e => {
+                    return (
+                        <React.Fragment key={e.id}>
+                            <hr style={{
+                                width: '50%',
+                            }}/>
+                            <div className={`list-item ${e.completed ? 'colored' : ''}`}>
+                                <p>ID: {e.id}</p>
+                                <span>title: {e.title}</span>
+                                <span>
+                                    <input
+                                        name={e.id}
+                                        type='checkbox'
+                                        checked={e.completed}
+                                        onChange={handleChange}/>
+                                </span>
+                                <p> user ID: {e.userId} </p>
+                                <p> Status: {e.completed ? 'true' : 'false'} </p>
+                            </div>
+                        </React.Fragment>
+                    )
+                })
+                }
+            </div>
         </>
     )
 }
+
 
 export default App
