@@ -1,91 +1,52 @@
-import {Component} from "react";
-import {COLORS, BUTTON_TYPES} from './helpers/constants'
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer";
-import NavBar from "./components/NavBar";
+import { useEffect, useState } from 'react';
+// import './App.css';
+import ToDoList from './contexts/ToDo/ToDoList';
+import ToDoItem from './contexts/ToDo/ToDoItem';
+import ToDoAdd from './contexts/ToDo/ToDoAdd';
+import ToDoFooter from './contexts/ToDo/ToDoFooter';
 
-const {RED, PURPLE, BLUE, BROWN, GREEN, ORANGE} = COLORS
-const {HIDE, SHOW} = BUTTON_TYPES
+function App() {
+   const [todos, settodos] = useState([])
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            circles: [
+   useEffect(() => {
+       fetch("https://jsonplaceholder.typicode.com/todos")
+       .then(res => res.json())
+       .then(res => settodos(res.splice(0, 10)))
+   }, [])
+
+  return (
+    <div className="App">
+        <ToDoAdd onAdd={(title) => {
+            settodos([
+                ...todos,
                 {
-                    id: '1',
-                    color: RED
-                },
-                {
-                    id: '2',
-                    color: PURPLE
-                },
-                {
-                    id: '3',
-                    color: BROWN
-                },
-                {
-                    id: '4',
-                    color: BLUE
-                },
-                {
-                    id: '5',
-                    color: GREEN
-                },
-            ],
-            chosenCircle: null,
-            isHeaderShown: true,
-            randomNumFromHeader: null
-        }
-    }
-
-    changeColor = e => {
-        this.setState({chosenCircle: e.target.id})
-    }
-
-    toggleHeader = () => {
-        this.setState(prev => {
-            prev.isHeaderShown = !prev.isHeaderShown
-            return prev
-        })
-    }
-
-    getRandomNum = (num) => {
-        this.setState({randomNumFromHeader: num})
-    }
-
-
-    render() {
-        const {circles, chosenCircle, isHeaderShown, randomNumFromHeader} = this.state
-
-        console.log('randomNumFromHeader', randomNumFromHeader)
-        return (
-            <>
-                {isHeaderShown && <Header
-                    getRandomNum={this.getRandomNum}
-                    color={chosenCircle && circles[chosenCircle - 1].color}
-                />}
-
-
-                <button onClick={this.toggleHeader}>{isHeaderShown ? HIDE : SHOW}</button>
-                <div className="container">
-                    {
-                        circles.map(circle => {
-                            return <div
-                                key={circle.id}
-                                id={circle.id}
-                                className='circle'
-                                style={{backgroundColor: chosenCircle === circle.id ? ORANGE : circle.color}}
-                                onClick={this.changeColor}
-                            >{circle.id}</div>
-                        })
-                    }
-                </div>
-                <Footer />
-                <NavBar />
-            </>
-        );
-    }
+                    id: Math.random(),
+                    title: title,
+                    isCompleted: false
+                }
+            ])
+        }}/>
+        <ToDoList 
+          todos={todos} 
+          onDeleted={(todo) => {
+              settodos(todos.filter((t) => t.id !== todo.id
+              ))
+          }}
+          onChange={(newTodo) => {
+             settodos(todos.map((todo) => {
+                if(todo.id === newTodo.id){
+                    return newTodo
+                } else {
+                    return todo
+                }
+             }))
+          }}
+          />
+        <ToDoFooter todos={todos} clearCompleted={() => {
+            settodos(todos.filter((todo) => !todo.isCompleted))
+        }}/>
+    </div>
+  );
 }
 
 export default App;
